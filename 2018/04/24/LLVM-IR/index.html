@@ -113,7 +113,7 @@
 <meta property="og:url" content="http://superpwd.club/2018/04/24/LLVM-IR/index.html">
 <meta property="og:site_name" content="YourButterfly">
 <meta property="og:description" content="Introducepass Terminator Instructions‘br’ InstructionSyntax:br i1 &amp;lt;cond&amp;gt;, label &amp;lt;iftrue&amp;gt;, label &amp;lt;iffalse&amp;gt; br label &amp;lt;dest&amp;gt;          ; Unconditional branch Overview:The ‘br’ inst">
-<meta property="og:updated_time" content="2018-04-24T10:00:45.274Z">
+<meta property="og:updated_time" content="2018-04-24T10:35:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LLVM-IR">
 <meta name="twitter:description" content="Introducepass Terminator Instructions‘br’ InstructionSyntax:br i1 &amp;lt;cond&amp;gt;, label &amp;lt;iftrue&amp;gt;, label &amp;lt;iffalse&amp;gt; br label &amp;lt;dest&amp;gt;          ; Unconditional branch Overview:The ‘br’ inst">
@@ -355,10 +355,13 @@ ret void                 ; Return from void function
 </code></pre><h3 id="Overview-1"><a href="#Overview-1" class="headerlink" title="Overview:"></a>Overview:</h3><pre><code>The ‘ret’ instruction is used to return control flow (and optionally a value) from a function back to the caller.
 
 There are two forms of the ‘ret’ instruction: one that returns a value and then causes control flow, and one that just causes control flow to occur.
-</code></pre><h3 id="Arguments-1"><a href="#Arguments-1" class="headerlink" title="Arguments:"></a>Arguments:</h3><pre><code>The ‘ret’ instruction optionally accepts a single argument, the return value. The type of the return value must be a ‘first class’ type.
+</code></pre><p><strong>ret两种格式：返回一个值然后产生控制流；只产生控制流</strong></p>
+<h3 id="Arguments-1"><a href="#Arguments-1" class="headerlink" title="Arguments:"></a>Arguments:</h3><pre><code>The ‘ret’ instruction optionally accepts a single argument, the return value. The type of the return value must be a ‘first class’ type.
 
 A function is not well formed if it it has a non-void return type and contains a ‘ret’ instruction with no return value or a return value with a type that does not match its type, or if it has a void return type and contains a ‘ret’ instruction with a return value.
-</code></pre><h3 id="Semantics-1"><a href="#Semantics-1" class="headerlink" title="Semantics:"></a>Semantics:</h3><pre><code>When the ‘ret’ instruction is executed, control flow returns back to the calling function’s context. If the caller is a “call” instruction, execution continues at the instruction after the call. If the caller was an “invoke” instruction, execution continues at the beginning of the “normal” destination block. If the instruction returns a value, that value shall set the call or invoke instruction’s return value.
+</code></pre><p><strong>The first class types. Values of these types are the only ones which can be produced by instructions.</strong></p>
+<p><strong>如果‘ret’出现不匹配的情况那么这个函数不是 “well formed”</strong></p>
+<h3 id="Semantics-1"><a href="#Semantics-1" class="headerlink" title="Semantics:"></a>Semantics:</h3><pre><code>When the ‘ret’ instruction is executed, control flow returns back to the calling function’s context. If the caller is a “call” instruction, execution continues at the instruction after the call. If the caller was an “invoke” instruction, execution continues at the beginning of the “normal” destination block. If the instruction returns a value, that value shall set the call or invoke instruction’s return value.
 </code></pre><h3 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h3><pre><code>ret i32 5                       ; Return an integer value of 5
 ret void                        ; Return from a void function
 ret { i32, i8 } { i32 4, i8 2 } ; Return a struct of values 4 and 2
