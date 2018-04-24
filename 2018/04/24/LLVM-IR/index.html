@@ -107,23 +107,23 @@
   <meta name="keywords" content="Hexo, NexT" />
 
 
-<meta name="description" content="简单介绍 llvm_mod afl-clang-fastc.c afl-llvm-pass.so.cc afl-llvm-rt.o.c    简单介绍AFL(American Fuzzy Lop),覆盖导向模糊测试引擎。 llvm_modafl-clang-fastc.c主要是一些参数的设置和环境check，最后调用execvp，执行cc_params[0](一般是clang),execvp的第">
+<meta name="description" content="Introducepass ‘unreachable’ InstructionSyntaxunreachable Overview:The ‘unreachable’ instruction has no defined semantics. This instruction is used to inform the optimizer that a particular portion of">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go-to-AFL">
-<meta property="og:url" content="http://superpwd.club/2018/04/16/Go-to-AFL/index.html">
+<meta property="og:title" content="LLVM-IR">
+<meta property="og:url" content="http://superpwd.club/2018/04/24/LLVM-IR/index.html">
 <meta property="og:site_name" content="YourButterfly">
-<meta property="og:description" content="简单介绍 llvm_mod afl-clang-fastc.c afl-llvm-pass.so.cc afl-llvm-rt.o.c    简单介绍AFL(American Fuzzy Lop),覆盖导向模糊测试引擎。 llvm_modafl-clang-fastc.c主要是一些参数的设置和环境check，最后调用execvp，执行cc_params[0](一般是clang),execvp的第">
-<meta property="og:updated_time" content="2018-04-17T02:54:41.748Z">
+<meta property="og:description" content="Introducepass ‘unreachable’ InstructionSyntaxunreachable Overview:The ‘unreachable’ instruction has no defined semantics. This instruction is used to inform the optimizer that a particular portion of">
+<meta property="og:updated_time" content="2018-04-24T04:00:10.974Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go-to-AFL">
-<meta name="twitter:description" content="简单介绍 llvm_mod afl-clang-fastc.c afl-llvm-pass.so.cc afl-llvm-rt.o.c    简单介绍AFL(American Fuzzy Lop),覆盖导向模糊测试引擎。 llvm_modafl-clang-fastc.c主要是一些参数的设置和环境check，最后调用execvp，执行cc_params[0](一般是clang),execvp的第">
+<meta name="twitter:title" content="LLVM-IR">
+<meta name="twitter:description" content="Introducepass ‘unreachable’ InstructionSyntaxunreachable Overview:The ‘unreachable’ instruction has no defined semantics. This instruction is used to inform the optimizer that a particular portion of">
 
 
 
 
 
 
-  <link rel="canonical" href="http://superpwd.club/2018/04/16/Go-to-AFL/"/>
+  <link rel="canonical" href="http://superpwd.club/2018/04/24/LLVM-IR/"/>
 
 
 
@@ -132,7 +132,7 @@
     sidebar: "",
   };
 </script>
-  <title>Go-to-AFL | YourButterfly</title>
+  <title>LLVM-IR | YourButterfly</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://superpwd.club/2018/04/16/Go-to-AFL/">
+    <link itemprop="mainEntityOfPage" href="http://superpwd.club/2018/04/24/LLVM-IR/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Super pwd">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Go-to-AFL</h1>
+          <h1 class="post-title" itemprop="name headline">LLVM-IR</h1>
         
 
         <div class="post-meta">
@@ -296,7 +296,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-16T14:46:45+08:00">2018-04-16</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-24T11:47:04+08:00">2018-04-24</time>
             
 
             
@@ -341,21 +341,14 @@
       
 
       
-        <ul>
-<li><a href="#%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D">简单介绍</a></li>
-<li><a href="#llvmmod">llvm_mod</a><ul>
-<li><a href="#afl-clang-fastcc">afl-clang-fastc.c</a></li>
-<li><a href="#afl-llvm-passsocc">afl-llvm-pass.so.cc</a></li>
-<li><a href="#afl-llvm-rtoc">afl-llvm-rt.o.c</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h1><p>AFL(American Fuzzy Lop),覆盖导向模糊测试引擎。</p>
-<h1 id="llvm-mod"><a href="#llvm-mod" class="headerlink" title="llvm_mod"></a>llvm_mod</h1><h2 id="afl-clang-fastc-c"><a href="#afl-clang-fastc-c" class="headerlink" title="afl-clang-fastc.c"></a>afl-clang-fastc.c</h2><pre><code>主要是一些参数的设置和环境check，最后调用execvp，执行cc_params[0](一般是clang),execvp的第二个参数是cc_params[0]的参数
-</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find_obj(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">edit_params(argc, argv);</span><br><span class="line"></span><br><span class="line">execvp(cc_params[<span class="number">0</span>], (<span class="keyword">char</span>**)cc_params);</span><br></pre></td></tr></table></figure>
-<h2 id="afl-llvm-pass-so-cc"><a href="#afl-llvm-pass-so-cc" class="headerlink" title="afl-llvm-pass.so.cc"></a>afl-llvm-pass.so.cc</h2><pre><code>代码插桩,整个插桩代码实现了__afl_area_ptr[cur_loc ^ __afl_prev_loc] ++ ,其中__afl_prev_loc 的值为前一个&quot;cur_loc&quot;右移一位。这样做的原因是：当出现类似于 A-&gt;A,B-&gt;B或者A-&gt;B,B-&gt;A这样的边时，不进行右移一位操作会使得到的结果出现碰撞，影响Coverage Accuracy
-</code></pre><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Make up cur_loc */</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">unsigned</span> <span class="keyword">int</span> cur_loc = AFL_R(MAP_SIZE);</span><br><span class="line"></span><br><span class="line"> ConstantInt *CurLoc = ConstantInt::get(Int32Ty, cur_loc);</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Load prev_loc */</span></span><br><span class="line"></span><br><span class="line"> LoadInst *PrevLoc = IRB.CreateLoad(AFLPrevLoc);</span><br><span class="line"> PrevLoc-&gt;setMetadata(M.getMDKindID(<span class="string">"nosanitize"</span>), MDNode::get(C, None));</span><br><span class="line"> Value *PrevLocCasted = IRB.CreateZExt(PrevLoc, IRB.getInt32Ty());</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Load SHM pointer */</span></span><br><span class="line"></span><br><span class="line"> LoadInst *MapPtr = IRB.CreateLoad(AFLMapPtr);</span><br><span class="line"> MapPtr-&gt;setMetadata(M.getMDKindID(<span class="string">"nosanitize"</span>), MDNode::get(C, None));</span><br><span class="line"> Value *MapPtrIdx =</span><br><span class="line">     IRB.CreateGEP(MapPtr, IRB.CreateXor(PrevLocCasted, CurLoc));</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Update bitmap */</span></span><br><span class="line"></span><br><span class="line"> LoadInst *Counter = IRB.CreateLoad(MapPtrIdx);</span><br><span class="line"> Counter-&gt;setMetadata(M.getMDKindID(<span class="string">"nosanitize"</span>), MDNode::get(C, None));</span><br><span class="line"> Value *Incr = IRB.CreateAdd(Counter, ConstantInt::get(Int8Ty, <span class="number">1</span>));</span><br><span class="line"> IRB.CreateStore(Incr, MapPtrIdx)</span><br><span class="line">     -&gt;setMetadata(M.getMDKindID(<span class="string">"nosanitize"</span>), MDNode::get(C, None));</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Set prev_loc to cur_loc &gt;&gt; 1 */</span></span><br><span class="line"></span><br><span class="line"> StoreInst *Store =</span><br><span class="line">     IRB.CreateStore(ConstantInt::get(Int32Ty, cur_loc &gt;&gt; <span class="number">1</span>), AFLPrevLoc);</span><br><span class="line"> Store-&gt;setMetadata(M.getMDKindID(<span class="string">"nosanitize"</span>), MDNode::get(C, None));</span><br></pre></td></tr></table></figure>
-<h2 id="afl-llvm-rt-o-c"><a href="#afl-llvm-rt-o-c" class="headerlink" title="afl-llvm-rt.o.c"></a>afl-llvm-rt.o.c</h2>
+        <h2 id="Introduce"><a href="#Introduce" class="headerlink" title="Introduce"></a>Introduce</h2><pre><code>pass
+</code></pre><h2 id="‘unreachable’-Instruction"><a href="#‘unreachable’-Instruction" class="headerlink" title="‘unreachable’ Instruction"></a>‘unreachable’ Instruction</h2><h3 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h3><pre><code>unreachable
+</code></pre><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview:"></a>Overview:</h3><pre><code>The ‘unreachable’ instruction has no defined semantics. This instruction is used to inform the optimizer that a particular portion of the code is not reachable. This can be used to indicate that the code after a no-return function cannot be reached, and other facts.
+
+属于Terminator Instructions，用来表示特定代码片不可达。可以在exit,__assert_fail这一类函数中看到
+</code></pre><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// BB is a BasicBlock point</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span>(UnreachableInst *inst = dyn_cast&lt;UnreachableInst&gt;(I))&#123;</span><br><span class="line">                        errs()&lt;&lt;*inst&lt;&lt;<span class="string">"\n"</span>&lt;&lt;*BB&lt;&lt;<span class="string">"\n\n"</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">    ...</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">; &lt;label&gt;:14:                                     ; preds = %2</span></span><br><span class="line"><span class="comment">  %15 = load i32, i32* @__afl_prev_loc, !dbg !10400, !nosanitize !2743</span></span><br><span class="line"><span class="comment">  %16 = load i8*, i8** @__afl_area_ptr, !dbg !10400, !nosanitize !2743</span></span><br><span class="line"><span class="comment">  %17 = xor i32 %15, 42531, !dbg !10400</span></span><br><span class="line"><span class="comment">  %18 = add i32 %17, 0, !dbg !10400</span></span><br><span class="line"><span class="comment">  %19 = getelementptr i8, i8* %16, i32 %18, !dbg !10400</span></span><br><span class="line"><span class="comment">  %20 = load i8, i8* %19, !dbg !10400, !nosanitize !2743</span></span><br><span class="line"><span class="comment">  %21 = add i8 %20, 1, !dbg !10400</span></span><br><span class="line"><span class="comment">  store i8 %21, i8* %19, !dbg !10400, !nosanitize !2743</span></span><br><span class="line"><span class="comment">  store i32 42531, i32* @__afl_prev_loc, !dbg !10400, !nosanitize !2743</span></span><br><span class="line"><span class="comment">  tail call void @__assert_fail(i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.5.595, i64 0, i64 0), i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.1.585, i64 0, i64 0), i32 951, i8* getelementptr inbounds ([38 x i8], [38 x i8]* @__PRETTY_FUNCTION__.PixarLogPreEncode, i64 0, i64 0)) #14, !dbg !10400</span></span><br><span class="line"><span class="comment">  unreachable, !dbg !10400</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="Semantics"><a href="#Semantics" class="headerlink" title="Semantics:"></a>Semantics:</h3><pre><code>The ‘unreachable’ instruction has no defined semantics.
+</code></pre>
       
     </div>
 
@@ -382,8 +375,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/12/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/04/16/Jotting-Makefile/" rel="next" title="Jotting-Makefile">
+                <i class="fa fa-chevron-left"></i> Jotting-Makefile
               </a>
             
           </div>
@@ -391,10 +384,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/16/Jotting-Makefile/" rel="prev" title="Jotting-Makefile">
-                Jotting-Makefile <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -508,7 +497,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简单介绍"><span class="nav-number">1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#llvm-mod"><span class="nav-number">2.</span> <span class="nav-text">llvm_mod</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#afl-clang-fastc-c"><span class="nav-number">2.1.</span> <span class="nav-text">afl-clang-fastc.c</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#afl-llvm-pass-so-cc"><span class="nav-number">2.2.</span> <span class="nav-text">afl-llvm-pass.so.cc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#afl-llvm-rt-o-c"><span class="nav-number">2.3.</span> <span class="nav-text">afl-llvm-rt.o.c</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce"><span class="nav-number">1.</span> <span class="nav-text">Introduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#‘unreachable’-Instruction"><span class="nav-number">2.</span> <span class="nav-text">‘unreachable’ Instruction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Syntax"><span class="nav-number">2.1.</span> <span class="nav-text">Syntax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">2.2.</span> <span class="nav-text">Overview:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semantics"><span class="nav-number">2.3.</span> <span class="nav-text">Semantics:</span></a></li></ol></li></ol></div>
             
 
           </div>
