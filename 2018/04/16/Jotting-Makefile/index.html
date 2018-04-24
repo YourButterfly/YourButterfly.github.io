@@ -107,23 +107,23 @@
   <meta name="keywords" content="Hexo, NexT" />
 
 
-<meta name="description" content="CVE-2018-9055 Description of problem: There is a reachable assertion abort in function jpc_firstone of JasPer that will lead to remote denial of service attack. Version-Release number of selected comp">
+<meta name="description" content="Introduce随笔，记录一下遇见的一些Makefile的命令和问题 代码变成可执行文件，叫做编译(compile)；先编译这个，还是先编译那个(即编译的安排)，叫做构建(build) echo 和 @echo1这联系到了echoing的问题，正常情况下，make会打印每条指令，然后执行，在命令前加‘@’，就能关闭echoing">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CVE-2018-9055">
-<meta property="og:url" content="http://superpwd.club/2018/03/27/CVE-2018-9055/index.html">
+<meta property="og:title" content="Jotting-Makefile">
+<meta property="og:url" content="http://superpwd.club/2018/04/16/Jotting-Makefile/index.html">
 <meta property="og:site_name" content="YourButterfly">
-<meta property="og:description" content="CVE-2018-9055 Description of problem: There is a reachable assertion abort in function jpc_firstone of JasPer that will lead to remote denial of service attack. Version-Release number of selected comp">
-<meta property="og:updated_time" content="2018-04-12T10:41:03.320Z">
+<meta property="og:description" content="Introduce随笔，记录一下遇见的一些Makefile的命令和问题 代码变成可执行文件，叫做编译(compile)；先编译这个，还是先编译那个(即编译的安排)，叫做构建(build) echo 和 @echo1这联系到了echoing的问题，正常情况下，make会打印每条指令，然后执行，在命令前加‘@’，就能关闭echoing">
+<meta property="og:updated_time" content="2018-04-16T08:39:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CVE-2018-9055">
-<meta name="twitter:description" content="CVE-2018-9055 Description of problem: There is a reachable assertion abort in function jpc_firstone of JasPer that will lead to remote denial of service attack. Version-Release number of selected comp">
+<meta name="twitter:title" content="Jotting-Makefile">
+<meta name="twitter:description" content="Introduce随笔，记录一下遇见的一些Makefile的命令和问题 代码变成可执行文件，叫做编译(compile)；先编译这个，还是先编译那个(即编译的安排)，叫做构建(build) echo 和 @echo1这联系到了echoing的问题，正常情况下，make会打印每条指令，然后执行，在命令前加‘@’，就能关闭echoing">
 
 
 
 
 
 
-  <link rel="canonical" href="http://superpwd.club/2018/03/27/CVE-2018-9055/"/>
+  <link rel="canonical" href="http://superpwd.club/2018/04/16/Jotting-Makefile/"/>
 
 
 
@@ -132,7 +132,7 @@
     sidebar: "",
   };
 </script>
-  <title>CVE-2018-9055 | YourButterfly</title>
+  <title>Jotting-Makefile | YourButterfly</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://superpwd.club/2018/03/27/CVE-2018-9055/">
+    <link itemprop="mainEntityOfPage" href="http://superpwd.club/2018/04/16/Jotting-Makefile/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Super pwd">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CVE-2018-9055</h1>
+          <h1 class="post-title" itemprop="name headline">Jotting-Makefile</h1>
         
 
         <div class="post-meta">
@@ -296,7 +296,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-27T15:38:55+08:00">2018-03-27</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-16T15:59:39+08:00">2018-04-16</time>
             
 
             
@@ -341,20 +341,9 @@
       
 
       
-        <p>CVE-2018-9055</p>
-<p>Description of problem:</p>
-<p>There is a reachable assertion abort in function jpc_firstone of JasPer that will lead to remote denial of service attack.</p>
-<p>Version-Release number of selected component (if applicable):</p>
-<p>&lt;= latest version</p>
-<p>The output information is as follows:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ../../../../jasper/jasper-debug/bin/jasper --input poc --input-format jpc --output out.jp2 --output-format jp2</span><br><span class="line">jasper: /home/<span class="built_in">pwd</span>/fuzz_jasper/jasper/src/libjasper/jpc/jpc_math.c:113: jpc_firstone: Assertion `x &gt;= 0<span class="string">' failed.</span></span><br><span class="line"><span class="string">Aborted (core dumped)</span></span><br></pre></td></tr></table></figure>
-<p>The gdb debugging information is listed below:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Program received signal SIGABRT</span><br><span class="line">pwndbg&gt; bt</span><br><span class="line">#0  0x00007ffff7760428 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:54</span><br><span class="line">#1  0x00007ffff776202a in __GI_abort () at abort.c:89</span><br><span class="line">#2  0x00007ffff7758bd7 in __assert_fail_base (fmt=&lt;optimized out&gt;, assertion=assertion@entry=0x7ffff7b99858 &quot;x &gt;= 0&quot;, file=file@entry=0x7ffff7b99818 &quot;/home/pwd/fuzz_&quot;..., line=line@entry=113, function=function@entry=0x7ffff7b99870 &lt;__PRETTY_FUNCTION__.4038&gt; &quot;jpc_firstone&quot;) at assert.c:92</span><br><span class="line">#3  0x00007ffff7758c82 in __GI___assert_fail (assertion=0x7ffff7b99858 &quot;x &gt;= 0&quot;, file=0x7ffff7b99818 &quot;/home/pwd/fuzz_&quot;..., line=113, function=0x7ffff7b99870 &lt;__PRETTY_FUNCTION__.4038&gt; &quot;jpc_firstone&quot;) at assert.c:101</span><br><span class="line">#4  0x00007ffff7b57a7e in jpc_firstone (x=-2147483648) at /home/pwd/fuzz_jasper/jasper/src/libjasper/jpc/jpc_math.c:113</span><br><span class="line">#5  0x00007ffff7b6df31 in jpc_enc_enccblks (enc=0x61a8d0) at /home/pwd/fuzz_jasper/jasper/src/libjasper/jpc/jpc_t1enc.c:160</span><br><span class="line">#6  0x00007ffff7b52151 in jpc_enc_encodemainbody (enc=0x61a8d0) at /home/pwd/fuzz_jasper/jasper/src/libjasper/jpc/jpc_enc.c:1401</span><br><span class="line">#7  0x00007ffff7b4ce14 in jpc_encode (image=0x61b590, out=0x60d580, optstr=0x7fffffffc900 &quot;\n_jp2overhead=9&quot;...) at /home/pwd/fuzz_jasper/jasper/src/libjasper/jpc/jpc_enc.c:308</span><br><span class="line">#8  0x00007ffff7b3a86f in jp2_encode (image=0x61b590, out=0x60d580, optstr=0x0) at /home/pwd/fuzz_jasper/jasper/src/libjasper/jp2/jp2_enc.c:397</span><br><span class="line">#9  0x00007ffff7b1fc00 in jas_image_encode (image=0x61b590, out=0x60d580, fmt=4, optstr=0x0) at /home/pwd/fuzz_jasper/jasper/src/libjasper/base/jas_image.c:469</span><br><span class="line">#10 0x000000000040252c in main (argc=9, argv=0x7fffffffdb08) at /home/pwd/fuzz_jasper/jasper/src/appl/jasper.c:277</span><br><span class="line">#11 0x00007ffff774b830 in __libc_start_main (main=0x401c76 &lt;main&gt;, argc=9, argv=0x7fffffffdb08, init=&lt;optimized out&gt;, fini=&lt;optimized out&gt;, rtld_fini=&lt;optimized out&gt;, stack_end=0x7fffffffdaf8) at ../csu/libc-start.c:291</span><br><span class="line">#12 0x0000000000401ba9 in _start ()</span><br></pre></td></tr></table></figure>
-<p>jpc_firstone in  jpc_math.c<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">int jpc_firstone(int x)</span><br><span class="line">&#123;</span><br><span class="line">	int n;</span><br><span class="line"></span><br><span class="line">	/* The argument must be nonnegative. */</span><br><span class="line">	assert(x &gt;= 0);</span><br><span class="line"></span><br><span class="line">	n = -1;</span><br><span class="line">	while (x &gt; 0) &#123;</span><br><span class="line">		x &gt;&gt;= 1;</span><br><span class="line">		++n;</span><br><span class="line">	&#125;</span><br><span class="line">	return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Additional info:</p>
-<p>Credits:</p>
-<p>pwd @360TeamSerious</p>
-<p>poc <a href="https://github.com/TeamSeri0us/pocs/blob/master/jasper/poc" target="_blank" rel="noopener">https://github.com/TeamSeri0us/pocs/blob/master/jasper/poc</a></p>
+        <h4 id="Introduce"><a href="#Introduce" class="headerlink" title="Introduce"></a>Introduce</h4><p>随笔，记录一下遇见的一些Makefile的命令和问题</p>
+<p>代码变成可执行文件，叫做编译(compile)；先编译这个，还是先编译那个(即编译的安排)，叫做构建(build)</p>
+<h4 id="echo-和-echo"><a href="#echo-和-echo" class="headerlink" title="echo 和 @echo"></a>echo 和 @echo</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这联系到了echoing的问题，正常情况下，make会打印每条指令，然后执行，在命令前加‘@’，就能关闭echoing</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -382,8 +371,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/22/GCC-Macro-Define/" rel="next" title="GCC Macro Define">
-                <i class="fa fa-chevron-left"></i> GCC Macro Define
+              <a href="/2018/04/16/Go-to-AFL/" rel="next" title="Go-to-AFL">
+                <i class="fa fa-chevron-left"></i> Go-to-AFL
               </a>
             
           </div>
@@ -391,10 +380,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/12/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -443,8 +428,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -489,6 +483,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduce"><span class="nav-number">1.</span> <span class="nav-text">Introduce</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#echo-和-echo"><span class="nav-number">2.</span> <span class="nav-text">echo 和 @echo</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
